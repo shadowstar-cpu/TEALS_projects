@@ -77,7 +77,11 @@ class Pokemon():
     def water_damage(self, amount):
         self.normal_damage(amount)
 
+    def steel_damage(self, amount):
+        self.normal_damage(amount)
 
+    def ground_damage(self, amount):
+        self.normal_damage(amount)
 """
 Now we define Pokemon classes of specific types. You will instantiate
 these classes to create individual Pokemon. Each of these classes should
@@ -105,7 +109,7 @@ class GrassType(Pokemon):
         self.attacks = [
             Attack("Vine Whip", 45, 100),
             Attack("Mega Drain", 40, 100),
-            Attack("Frenzy Plant", 150, 90)
+            Attack("Frenzy Plant", 150, 60)
         ]
 
     # Grass Pokemon always do grass damage
@@ -197,9 +201,9 @@ class GroundType(Pokemon):
 
     # Grass Pokemon always do grass damage
     def do_damage_to(self, other_player, amount):
-        other_player.fire_damage(amount)
+        other_player.ground_damage(amount)
 
-    # Override default to do extra damage if fire attacks me
+    # Override default to do extra damage if grass attacks me
     def grass_damage(self, amount):
         self.extra_damage(amount)
     
@@ -218,13 +222,13 @@ class SteelType(Pokemon):
     def init_attacks(self):
         self.attacks = [
             Attack("Steel Beam", 140, 95),
-            Attack("tbd", 00, 00),
-            Attack("tbd", 00, 00)
+            Attack("Steel Wing", 70, 95),
+            Attack("Steel Roller", 130, 100)
         ]
 
     # Grass Pokemon always do grass damage
     def do_damage_to(self, other_player, amount):
-        other_player.fire_damage(amount)
+        other_player.steel_damage(amount)
 
     # Override default to do extra damage if fire attacks me
     def fire_damage(self, amount):
@@ -267,17 +271,17 @@ Now we create a list of individual Pokemon. You will need to add 8 more.
 pocket_monsters = [
     WaterType(55, 45, 'Whooper'),
     WaterType(20, 10, 'Magikarp'),
-    WaterType(130, 80, 'Lapyas'),
+    WaterType(130, 80, 'Lapras'),
     GrassType(45, 45, 'Snivy'),
     GrassType(40, 35, 'Weedle'),
-    GrassType(65, 110, 'leafion'),
+    GrassType(65, 110, 'Leafion'),
     FireType(40, 50, 'Charmander'),
     FireType(115, 115, 'Entei'),
     FireType(90, 110, 'Arcanine'),
     GroundType(105, 130, 'Rhydon'),
     GroundType(35, 100, 'Dugtrio'),
     GroundType(35, 45, 'Onix'),
-    SteelType(75, 85, 'steelix'),
-    SteelType(80, 75, 'registeel'),
-    SteelType(100, 110, 'celesteela'),
+    SteelType(75, 85, 'Steelix'),
+    SteelType(80, 75, 'Registeel'),
+    SteelType(100, 110, 'Celesteela'),
 ]
