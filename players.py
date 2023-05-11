@@ -91,6 +91,12 @@ class Player():
 
     def water_damage(self, damage):
         self.attacker.water_damage(damage)
+    
+    def steel_damage(self, damage):
+        self.attacker.steel_damage(damage)
+
+    def ground_damage(self, damage):
+        self.attacker.ground_damage(damage)
 
     # active Pokemon name, just the name.
     def attacker_name(self):
