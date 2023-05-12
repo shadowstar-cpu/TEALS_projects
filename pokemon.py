@@ -107,9 +107,12 @@ class GrassType(Pokemon):
     # this initialization is called by __init__ in the superclass Pokemon.
     def init_attacks(self):
         self.attacks = [
-            Attack("Vine Whip", 45, 100),
-            Attack("Mega Drain", 40, 95),
-            Attack("Frenzy Plant", 150, 50)
+            Attack("Vine Whip", 45, 85),
+            Attack("Mega Drain", 40, 90),
+            Attack("Frenzy Plant", 150, 50), 
+            Attack("Bullet Seed", 25, 100),
+            Attack("Leaf Blade", 90, 65),
+            Attack("Razor Leaf", 55, 80),
         ]
 
     # Grass Pokemon always do grass damage
@@ -138,9 +141,12 @@ class WaterType(Pokemon):
     # this initialization is called by __init__ in the superclass Pokemon.
     def init_attacks(self):
         self.attacks = [
-            Attack("Muddy Water", 90, 90),
+            Attack("Muddy Water", 75, 85),
             Attack("Water Gun", 40, 100),
-            Attack("Water Shuriken", 100, 50)
+            Attack("Water Shuriken", 100, 70),
+            Attack("Surf", 90, 75),
+            Attack("Aqua Jet", 55, 90),
+            Attack("Waterfall", 120, 55),
         ]
 
     # Water Pokemon always do water damage
@@ -169,7 +175,10 @@ class FireType(Pokemon):
         self.attacks = [
             Attack("Fire Punch", 75, 95),
             Attack("Sacred Fire", 100, 75),
-            Attack("Fire Fang", 65, 100)
+            Attack("Fire Fang", 65, 100),
+            Attack("Heat Wave", 90, 95),
+            Attack("Sizzly Slide", 90, 100),
+            Attack("Blaze Kick", 85, 90),
         ]
 
     # Grass Pokemon always do grass damage
@@ -196,7 +205,10 @@ class GroundType(Pokemon):
         self.attacks = [
             Attack("Dig", 80, 90),
             Attack("Earthquake", 100, 80),
-            Attack("Drill Rain", 70, 95)
+            Attack("Drill Run", 70, 95),
+            Attack("Bone Club", 65, 85),
+            Attack("Scorching Sands", 70, 100),
+            Attack("Stomping Tantrum", 75, 100),
         ]
 
     # Grass Pokemon always do grass damage
@@ -223,7 +235,10 @@ class SteelType(Pokemon):
         self.attacks = [
             Attack("Steel Beam", 140, 65),
             Attack("Steel Wing", 70, 95),
-            Attack("Steel Roller", 130, 70)
+            Attack("Steel Roller", 130, 75),
+            Attack("Anchor shot", 80, 100),
+            Attack("Iron Tail", 100, 75),
+            Attack("Metal Claw", 50, 95),
         ]
 
     # Grass Pokemon always do grass damage
