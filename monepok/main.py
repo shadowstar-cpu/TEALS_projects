@@ -22,12 +22,6 @@ def show_pikachu():
          (_,'
 """)
 
-"""
-Call start_game to initialize and get the players taking turns.
-Right now we are set up for one user and one computer player.
-You can change that if you want.
-"""
-
 def start_game():
     """Start the Pokemon game."""
     show_pikachu()

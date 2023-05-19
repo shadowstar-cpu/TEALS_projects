@@ -13,6 +13,8 @@ class Pokemon():
         self.max_health = health
         self.attack_power = attack_power
         self.name = name
+        self.type = ''
+        self.attacks = []
         self.init_attacks()
 
     def __str__(self):
@@ -21,35 +23,25 @@ class Pokemon():
 
     # just the name no stats. Used in print function calls.
     def attacker_name(self):
-        '''
-        returns the name of the pokemon
-        '''
+        '''returns the name of the pokemon'''
         return self.name
 
     def attack_types(self):
-        '''
-        returns the attacks this pokemon has
-        '''
+        '''returns the attacks this pokemon has'''
         return self.attacks
 
     def dead(self):
-        '''
-        returns that the pokemon has died
-        '''
+        '''returns that the pokemon has died'''
         return self.health == 0
 
     # Pokemon will only heal or attack. Players must switch them.
     def heal(self, player, healing):
-        '''
-        adds to the pokemons current health
-        '''
+        '''adds to the pokemons current health'''
         self.health = min(self.health + healing, self.max_health)
         print(f"{player} heals {self.attacker_name()}.")
 
     def attack(self, attack, other_player):
-        '''
-        attacks another pokemon by calling other functions
-        '''
+        '''attacks another pokemon by calling other functions'''
         print(
             f"{self.attacker_name()} attacking {other_player.attacker_name()}"
             f" with {attack.name}.")
@@ -59,13 +51,12 @@ class Pokemon():
     # Rock, paper, scissors style of extra damage. Each Pokemon type is
     # stronger against one other type.
     def normal_damage(self, damage):
-        '''
-        defines normal damage which 
-        '''
+        '''takes damage out of health and prints the damage done'''
         self.health = max(self.health - damage, 0)
         print(f"{damage} damage done to {self.attacker_name()}")
 
     def extra_damage(self, amount):
+        '''takes damage out of health after increasing the damage and prints the damage done'''
         damage = round(amount * 1.5)
         self.health = max(self.health - damage, 0)
         print(
@@ -73,24 +64,30 @@ class Pokemon():
 
 
     def lower_damage(self, amount):
+        '''takes damage out of health after decreasing the damage and prints the damage done'''
         damage = round(amount *.5)
         self.health = max(self.health - damage, 0)
         print(
             f"{damage} including lowered damage done to {self.attacker_name()}")
     # default is normal damage for all types of attackers
     def grass_damage(self, amount):
+        '''defaults grass damage as normal damage'''
         self.normal_damage(amount)
 
     def water_damage(self, amount):
+        '''defaults water damage as normal damage'''
         self.normal_damage(amount)
 
     def fire_damage(self, amount):
+        '''defaults fire damage as normal damage'''
         self.normal_damage(amount)
 
     def steel_damage(self, amount):
+        '''defaults steel damage as normal damage'''
         self.normal_damage(amount)
 
     def ground_damage(self, amount):
+        '''defaults ground damage as normal damage'''
         self.normal_damage(amount)
 
 class Attack():
@@ -106,11 +103,11 @@ class Attack():
                 f"attack power and {self.accuracy}% chance to hit.")
 
     def calculate_damage(self, attack_power):
+        '''Calculates how much damage '''
         if randint(1, 100) <= self.accuracy:
             max_damage = round(attack_power * self.power_percent / 100)
             return randint(1, max_damage)
-        else:
-            return 0  # Ha Ha missed me
+        return 0  # Ha Ha missed me
 
 class GrassType(Pokemon):
     """
@@ -118,40 +115,39 @@ class GrassType(Pokemon):
     Leaf Storm, Mega Drain, and Razor Leaf attacks.
     """
     type = 'grass'
-    grass_attacks = [
+
+    # add the 3 attack types to each pokemon of this type. Notice that
+    # this initialization is called by __init__ in the superclass Pokemon.
+    def init_attacks(self):
+        '''initiliazies attacks for grass pokemon'''
+        grass_attacks = [
         Attack("Frenzy Plant", 150, 20),
         Attack("Leaf Blade", 90, 50),
-        Attack("Razor Leaf", 55, 70), 
+        Attack("Razor Leaf", 55, 70),
         Attack("Vine Whip", 45, 85),
         Attack("Mega Drain", 40, 90),
         Attack("Bullet Seed", 25, 100),
         ]
-    # add the 3 attack types to each pokemon of this type. Notice that
-    # this initialization is called by __init__ in the superclass Pokemon.
-    def init_attacks(self):
-        atck1 = randint(1, 6)
+        atck1 = randint(0, 5)
         atck2 = atck1
         while atck2 == atck1:
-            atck2 = randint(1,6)
+            atck2 = randint(0, 5)
         atck3 = atck1
-        while atck3 == atck1 or atck3 == atck2:
-            atck3 = randint(1,6)
+        while atck3 in (atck1, atck2):
+            atck3 = randint(0, 5)
         self.attacks = [grass_attacks[atck1], grass_attacks[atck2], grass_attacks[atck3]]
 
     # Grass Pokemon always do grass damage
     def do_damage_to(self, other_player, amount):
+        '''Calls the grass damage function on the other player to do damage'''
         other_player.grass_damage(amount)
 
     # Override default to do extra damage if fire attacks me
     def fire_damage(self, amount):
         self.extra_damage(amount)
-    
+
     def grass_damage(self, amount):
         self.lower_damage(amount)
-
-
-"""Water type Pokemon have water attacks and are weak to grass damage."""
-
 
 class WaterType(Pokemon):
     """
@@ -159,7 +155,11 @@ class WaterType(Pokemon):
     Surf, Bubble and Hydro Pump attacks.
     """
     type = 'water'
-    water_attacks = [
+    # add the 3 attack types to each pokemon of this type. Notice that
+    # this initialization is called by __init__ in the superclass Pokemon.
+    def init_attacks(self):
+        '''initiliazies attacks for water pokemon'''
+        water_attacks = [
         Attack("Waterfall", 120, 25),
         Attack("Water Shuriken", 100, 40),
         Attack("Surf", 90, 50),
@@ -167,20 +167,18 @@ class WaterType(Pokemon):
         Attack("Aqua Jet", 55, 70),
         Attack("Water Gun", 40, 100),
         ]
-    # add the 3 attack types to each pokemon of this type. Notice that
-    # this initialization is called by __init__ in the superclass Pokemon.
-    def init_attacks(self):
-        atck1 = randint(1, 6)
+        atck1 = randint(0, 6)
         atck2 = atck1
         while atck2 == atck1:
-            atck2 = randint(1,6)
+            atck2 = randint(0, 5)
         atck3 = atck1
-        while atck3 == atck1 or atck3 == atck2:
-            atck3 = randint(1,6)
+        while atck3 in (atck1, atck2):
+            atck3 = randint(0, 5)
         self.attacks = [water_attacks[atck1], water_attacks[atck2], water_attacks[atck3]]
 
     # Water Pokemon always do water damage
     def do_damage_to(self, other_player, amount):
+        '''calls the water damage function on the other player to do damage'''
         other_player.water_damage(amount)
 
     # Override default to do extra damage if fire attacks me
@@ -189,8 +187,6 @@ class WaterType(Pokemon):
 
     def water_damage(self, amount):
         self.lower_damage(amount)
-"""Fire type Pokemon have fire attacks and are weak to water damage."""
-
 
 class FireType(Pokemon):
     """
@@ -198,7 +194,11 @@ class FireType(Pokemon):
     Ember, Fire Punch, and Flame Wheel attacks.
     """
     type = 'fire'
-    fire_attacks = [        
+    # add the 3 attack types to each pokemon of this type. Notice that
+    # this initialization is called by __init__ in the superclass Pokemon.
+    def init_attacks(self):
+        '''initiliazies attacks for fire pokemon'''
+        fire_attacks = [
         Attack("Sacred Fire", 110, 25),
         Attack("Sizzly Slide", 100, 40),
         Attack("Heat Wave", 90, 50),
@@ -206,25 +206,23 @@ class FireType(Pokemon):
         Attack("Fire Punch", 75, 60),
         Attack("Fire Fang", 65, 100),
         ]
-    # add the 3 attack types to each pokemon of this type. Notice that
-    # this initialization is called by __init__ in the superclass Pokemon.
-    def init_attacks(self):
-        atck1 = randint(1, 6)
+        atck1 = randint(0, 5)
         atck2 = atck1
         while atck2 == atck1:
-            atck2 = randint(1,6)
+            atck2 = randint(0, 5)
         atck3 = atck1
-        while atck3 == atck1 or atck3 == atck2:
-            atck3 = randint(1,6)
+        while atck3 in (atck1, atck2):
+            atck3 = randint(0, 5)
         self.attacks = [fire_attacks[atck1], fire_attacks[atck2], fire_attacks[atck3]]
     # Grass Pokemon always do grass damage
     def do_damage_to(self, other_player, amount):
+        '''calls the fire damage function on the other player to do damage'''
         other_player.fire_damage(amount)
 
     # Override default to do extra damage if fire attacks me
     def water_damage(self, amount):
         self.extra_damage(amount)
-    
+
     def fire_damage(self, amount):
         self.lower_damage(amount)
 
@@ -234,7 +232,11 @@ class GroundType(Pokemon):
     Ember, Fire Punch, and Flame Wheel attacks.
     """
     type = 'ground'
-    ground_attacks = [
+    # add the 3 attack types to each pokemon of this type. Notice that
+    # this initialization is called by __init__ in the superclass Pokemon.
+    def init_attacks(self):
+        '''initiliazies attacks for ground pokemon'''
+        ground_attacks = [
         Attack("Earthquake", 110, 25),
         Attack("Dig", 90, 35),
         Attack("Stomping Tantrum", 75, 45),
@@ -242,27 +244,24 @@ class GroundType(Pokemon):
         Attack("Drill Run", 60, 75),
         Attack("Bone Club", 50, 100),
         ]
-
-    # add the 3 attack types to each pokemon of this type. Notice that
-    # this initialization is called by __init__ in the superclass Pokemon.
-    def init_attacks(self):
-        atck1 = randint(1, 6)
+        atck1 = randint(0, 5)
         atck2 = atck1
         while atck2 == atck1:
-            atck2 = randint(1,6)
+            atck2 = randint(0, 5)
         atck3 = atck1
-        while atck3 == atck1 or atck3 == atck2:
-            atck3 = randint(1,6)
+        while atck3 in (atck1, atck2):
+            atck3 = randint(0, 5)
         self.attacks = [ground_attacks[atck1], ground_attacks[atck2], ground_attacks[atck3]]
 
     # Grass Pokemon always do grass damage
     def do_damage_to(self, other_player, amount):
+        '''calls the ground damage on the other player to do damage'''
         other_player.ground_damage(amount)
 
     # Override default to do extra damage if grass attacks me
     def grass_damage(self, amount):
         self.extra_damage(amount)
-    
+
     def ground_damage(self, amount):
         self.lower_damage(amount)
 
@@ -272,7 +271,11 @@ class SteelType(Pokemon):
     Ember, Fire Punch, and Flame Wheel attacks.
     """
     type = 'steel'
-    steel_attacks = [
+    # add the 3 attack types to each pokemon of this type. Notice that
+    # this initialization is called by __init__ in the superclass Pokemon.
+    def init_attacks(self):
+        '''initiliazies attacks for steel pokemon'''
+        steel_attacks = [
         Attack("Steel Beam", 140, 20),
         Attack("Steel Roller", 110, 25),
         Attack("Iron Tail", 90, 35),
@@ -280,26 +283,24 @@ class SteelType(Pokemon):
         Attack("Steel Wing", 70, 55),
         Attack("Metal Claw", 50, 100),
         ]
-    # add the 3 attack types to each pokemon of this type. Notice that
-    # this initialization is called by __init__ in the superclass Pokemon.
-    def init_attacks(self):
-        atck1 = randint(1, 6)
+        atck1 = randint(0, 5)
         atck2 = atck1
         while atck2 == atck1:
-            atck2 = randint(1,6)
+            atck2 = randint(0, 5)
         atck3 = atck1
-        while atck3 == atck1 or atck3 == atck2:
-            atck3 = randint(1,6)
+        while atck3 in (atck1, atck2):
+            atck3 = randint(0, 5)
         self.attacks = [steel_attacks[atck1], steel_attacks[atck2], steel_attacks[atck3]]
 
     # Grass Pokemon always do grass damage
     def do_damage_to(self, other_player, amount):
+        '''calls the steel damage function on the other player to do damage'''
         other_player.steel_damage(amount)
 
     # Override default to do extra damage if fire attacks me
     def fire_damage(self, amount):
         self.extra_damage(amount)
-    
+
     def steel_damage(self, amount):
         self.lower_damage(amount)
 
