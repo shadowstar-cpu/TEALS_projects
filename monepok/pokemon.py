@@ -1,16 +1,8 @@
-"""
-You will be working with this file. 
-1. Add the WaterType Pokemon.
-2. Add the FireType Pokemon.
-3. Instantiate 9 Pokemon, 3 of each type.
-"""
-"""
-Pokemon!!! The Pokemon class does almost everything.
-Subclasses are of types grass, fire, or water.
-Each type has different abilities.
-"""
-
+'''
+Has all the class definitions and sets up instances.
+'''
 from random import randint
+
 
 
 class Pokemon():
@@ -29,20 +21,35 @@ class Pokemon():
 
     # just the name no stats. Used in print function calls.
     def attacker_name(self):
+        '''
+        returns the name of the pokemon
+        '''
         return self.name
 
     def attack_types(self):
+        '''
+        returns the attacks this pokemon has
+        '''
         return self.attacks
 
     def dead(self):
+        '''
+        returns that the pokemon has died
+        '''
         return self.health == 0
 
     # Pokemon will only heal or attack. Players must switch them.
     def heal(self, player, healing):
+        '''
+        adds to the pokemons current health
+        '''
         self.health = min(self.health + healing, self.max_health)
         print(f"{player} heals {self.attacker_name()}.")
 
     def attack(self, attack, other_player):
+        '''
+        attacks another pokemon by calling other functions
+        '''
         print(
             f"{self.attacker_name()} attacking {other_player.attacker_name()}"
             f" with {attack.name}.")
@@ -52,6 +59,9 @@ class Pokemon():
     # Rock, paper, scissors style of extra damage. Each Pokemon type is
     # stronger against one other type.
     def normal_damage(self, damage):
+        '''
+        defines normal damage which 
+        '''
         self.health = max(self.health - damage, 0)
         print(f"{damage} damage done to {self.attacker_name()}")
 
@@ -83,19 +93,24 @@ class Pokemon():
     def ground_damage(self, amount):
         self.normal_damage(amount)
 
-"""
-Now we define Pokemon classes of specific types. You will instantiate
-these classes to create individual Pokemon. Each of these classes should
-use the Pokemon class as a superclass.
-Each type of Pokemon will need to store its type. Each type will Need to
-implement init_attacks to create 3 attack types. Each type will need to
-implement do_damage_to to tell the other Pokemon what type of damage is 
-done. Each type will also need to override a specific type of damage and 
-do extra to itself.
-"""
+class Attack():
+    """Attacks do the damage calculation."""
 
-""" Grass type Pokemon have leaf attacks and are weak to fire damage."""
+    def __init__(self, name, power, accuracy):
+        self.name = name
+        self.power_percent = power
+        self.accuracy = accuracy
 
+    def __str__(self):
+        return (f"{self.name} with {self.power_percent}% of "
+                f"attack power and {self.accuracy}% chance to hit.")
+
+    def calculate_damage(self, attack_power):
+        if randint(1, 100) <= self.accuracy:
+            max_damage = round(attack_power * self.power_percent / 100)
+            return randint(1, max_damage)
+        else:
+            return 0  # Ha Ha missed me
 
 class GrassType(Pokemon):
     """
@@ -288,37 +303,8 @@ class SteelType(Pokemon):
     def steel_damage(self, amount):
         self.lower_damage(amount)
 
-"""
-We are going to make objects to represent attacks. 
-Damage calculations and hit/miss are done here.
-Use the init_attacks method to instatiate 3 different
-attacks for each new type of Pokemon.
-"""
 
 
-class Attack():
-    """Attacks do the damage calculation."""
-
-    def __init__(self, name, power, accuracy):
-        self.name = name
-        self.power_percent = power
-        self.accuracy = accuracy
-
-    def __str__(self):
-        return (f"{self.name} with {self.power_percent}% of "
-                f"attack power and {self.accuracy}% chance to hit.")
-
-    def calculate_damage(self, attack_power):
-        if randint(1, 100) <= self.accuracy:
-            max_damage = round(attack_power * self.power_percent / 100)
-            return randint(1, max_damage)
-        else:
-            return 0  # Ha Ha missed me
-
-
-"""
-Now we create a list of individual Pokemon. You will need to add 8 more.
-"""
 pocket_monsters = [
     WaterType(55, 45, 'Whooper'),
     WaterType(20, 10, 'Magikarp'),
